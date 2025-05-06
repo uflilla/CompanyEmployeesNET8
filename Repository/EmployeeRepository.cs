@@ -18,7 +18,7 @@ internal sealed class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRe
                 trackChanges)
             .FilterEmployees(employeeParameters.MinAge, employeeParameters.MaxAge)
             .Search(employeeParameters.SearchTerm)
-            .OrderBy(e => e.Name)
+            .Sort(employeeParameters.OrderBy)
             .ToListAsync();
         var count = await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges).CountAsync();
         return new PagedList<Employee>(employees, count, employeeParameters.PageNumber, employeeParameters.PageSize);
