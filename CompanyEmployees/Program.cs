@@ -1,11 +1,14 @@
 using CompanyEmployees;
 using CompanyEmployees.Extensions;
+using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using NLog;
 using Presentation.ActionFilters;
+using Service;
+using Shared.DataTransferObjects;
 using LogLevel = NLog.LogLevel;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +27,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 builder.Services.AddControllers(config =>
     {
         config.RespectBrowserAcceptHeader=true;
