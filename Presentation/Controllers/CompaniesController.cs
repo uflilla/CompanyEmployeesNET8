@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Presentation.ActionFilters;
 using Presentation.ModelBinders;
 using Service.Contracts;
@@ -11,6 +12,8 @@ namespace Presentation.Controllers
     [ApiVersion("1.0")]
     [Route("api/companies")]
     [ApiController]
+    //[ResponseCache(CacheProfileName = "120SecDuration")]
+    [OutputCache(PolicyName = "120SecExpiration")]
     public class CompaniesController : ControllerBase
     {
         private readonly IServiceManager _service;
@@ -26,6 +29,8 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:guid}", Name = "CompanyById")]
+        //[ResponseCache(Duration = 60)]
+        [OutputCache(Duration = 60)]
         public async Task<IActionResult> GetCompany(Guid id)
         {
             var company = await _service.CompanyService.GetCompanyAsync(id, trackChanges: false);
