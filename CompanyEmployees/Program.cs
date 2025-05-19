@@ -25,6 +25,9 @@ builder.Services.ConfigureVersioning();
 //builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureOutputCaching();
 builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -60,7 +63,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions()
 app.UseRateLimiter();
 app.UseCors("CorsPolicy");
 //app.UseResponseCaching();
-app.UseOutputCache(); 
+app.UseOutputCache();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
